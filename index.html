@@ -1,0 +1,33 @@
+<html>
+    <head><title>Itch API test</title></head>
+    <body>
+        <div id="output"></div>
+        <script>
+            const output = document.getElementById("output");
+            const log = function (str) {
+                output.appendChild(document.createTextNode(str));
+                output.appendChild(document.createElement("br"));
+            };
+
+            log("Initializing...");
+            if (typeof(Itch) !== "undefined") {
+                log("Launched from itch app; fetching...");
+                fetch({
+                    method: "GET",
+                    url: "https://itch.io/api/1/" + Itch.env.ITCHIO_API_KEY + "/me"
+                }).then(function (response) {
+                    log("Received response");
+                    if (response.ok) {
+                        log("Response ok");
+                        response.json.then(function (json) {
+                            log("Parsed JSON:");
+                            log(JSON.stringify(json));
+                        });
+                    }
+                });
+            } else {
+                log("Not launched from Itch app");
+            }
+        </script>
+    </body>
+</html>
